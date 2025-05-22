@@ -22,8 +22,12 @@ typedef struct {
 
 // deklarasi function
 void inputData(SeaLocation *loc);
+<<<<<<< HEAD
 void displayStatus(SeaLocation *loc, int index);
 void printLine();
+=======
+void calculateIndex(SeaLocation *loc);
+>>>>>>> 3d834f20b4c47ca935a399c457b5c81cfd095775
 
 // fungsi main
 int main(){
@@ -167,6 +171,7 @@ void calculateIndex(SeaLocation *loc) {
     } else {
         loc->danger = HIGH;
     }
+<<<<<<< HEAD
 }
 
 //fungsi untuk display status perlokasi
@@ -202,3 +207,6 @@ void displayStatus(SeaLocation *loc, int index) {
 void printLine() {
 	printf("-------------------------------\n");
 }
+=======
+}
+>>>>>>> 3d834f20b4c47ca935a399c457b5c81cfd095775
