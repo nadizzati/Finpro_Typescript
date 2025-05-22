@@ -149,16 +149,16 @@ void inputData(SeaLocation *loc) {
 void displayStatus(SeaLocation *loc, int index) {
 	printf("Lokasi %d: %s\n", index, loc->name);
 	if(loc->plasticLevel > 0) {
-		printf(" Plastik     :%.2f\n", loc->plasticLevel);
+		printf(" Plastik     : %.2f\n", loc->plasticLevel);
 	}
 	if(loc->oilLevel > 0) {
-		printf(" Minyak      :%.2f\n", loc->oilLevel);
+		printf(" Minyak      : %.2f\n", loc->oilLevel);
 	}
 	if(loc->pesticideLevel > 0) {
-		printf(" Pestisida   :%.2f\n", loc->pesticideLevel);
+		printf(" Pestisida   : %.2f\n", loc->pesticideLevel);
 	}
 	if(loc->heavyMetalLevel > 0) {
-		printf(" Logam Berat :%.2f\n", loc->heavyMetalLevel);
+		printf(" Logam Berat : %.2f\n", loc->heavyMetalLevel);
 	}
 	
 	printf(" Indeks Total : %.2f\n", loc->totalIndex);
