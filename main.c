@@ -145,6 +145,30 @@ void inputData(SeaLocation *loc) {
     getchar();
 }
 
+void calculateIndex(SeaLocation *loc) {
+    if (loc->countPolutionTypes == 0) {
+        loc->totalIndex = 0.0f;
+        loc->danger = LOW;
+        return;
+    }
+
+    float total = 0.0f;
+    if (loc->plasticLevel > 0) total += loc->plasticLevel;
+    if (loc->oilLevel > 0) total += loc->oilLevel;
+    if (loc->pesticideLevel > 0) total += loc->pesticideLevel;
+    if (loc->heavyMetalLevel > 0) total += loc->heavyMetalLevel;
+
+    loc->totalIndex = total / (float)(loc->countPolutionTypes);
+
+    if (loc->totalIndex < 30) {
+        loc->danger = LOW;
+    } else if (loc->totalIndex < 70) {
+        loc->danger = MODERATE;
+    } else {
+        loc->danger = HIGH;
+    }
+}
+
 //fungsi untuk display status perlokasi
 void displayStatus(SeaLocation *loc, int index) {
 	printf("Lokasi %d: %s\n", index, loc->name);
