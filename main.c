@@ -22,8 +22,12 @@ typedef struct {
 
 // deklarasi function
 void inputData(SeaLocation *loc);
+<<<<<<< HEAD
 void displayStatus(SeaLocation *loc, int index);
 void printLine();
+=======
+void calculateIndex(SeaLocation *loc);
+>>>>>>> 3d834f20b4c47ca935a399c457b5c81cfd095775
 
 // fungsi main
 int main(){
@@ -145,6 +149,31 @@ void inputData(SeaLocation *loc) {
     getchar();
 }
 
+void calculateIndex(SeaLocation *loc) {
+    if (loc->countPolutionTypes == 0) {
+        loc->totalIndex = 0.0f;
+        loc->danger = LOW;
+        return;
+    }
+
+    float total = 0.0f;
+    if (loc->plasticLevel > 0) total += loc->plasticLevel;
+    if (loc->oilLevel > 0) total += loc->oilLevel;
+    if (loc->pesticideLevel > 0) total += loc->pesticideLevel;
+    if (loc->heavyMetalLevel > 0) total += loc->heavyMetalLevel;
+
+    loc->totalIndex = total / (float)(loc->countPolutionTypes);
+
+    if (loc->totalIndex < 30) {
+        loc->danger = LOW;
+    } else if (loc->totalIndex < 70) {
+        loc->danger = MODERATE;
+    } else {
+        loc->danger = HIGH;
+    }
+<<<<<<< HEAD
+}
+
 //fungsi untuk display status perlokasi
 void displayStatus(SeaLocation *loc, int index) {
 	printf("Lokasi %d: %s\n", index, loc->name);
@@ -178,3 +207,6 @@ void displayStatus(SeaLocation *loc, int index) {
 void printLine() {
 	printf("-------------------------------\n");
 }
+=======
+}
+>>>>>>> 3d834f20b4c47ca935a399c457b5c81cfd095775
