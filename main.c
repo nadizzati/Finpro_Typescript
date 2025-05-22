@@ -22,16 +22,53 @@ typedef struct {
 
 // deklarasi function
 void inputData(SeaLocation *loc);
-<<<<<<< HEAD
 void displayStatus(SeaLocation *loc, int index);
 void printLine();
-=======
 void calculateIndex(SeaLocation *loc);
->>>>>>> 3d834f20b4c47ca935a399c457b5c81cfd095775
+void showDanger();
+
 
 // fungsi main
 int main(){
+    int n, i;
+    printf("=== Program Pemantauan Polusi Laut ===\n");
+    printf("Masukkan jumlah lokasi laut: ");
+    scanf("%d", &n);
+    getchar();
+    printf("\n");
+    printLine();
 
+    SeaLocation locations[n];
+
+    for (i = 0; i < n; i++) {
+        if (i > 0) {
+            printLine();
+        }
+        printf("Lokasi ke-%d\n\n", i + 1);
+        inputData(&locations[i]);       // Orang 1
+        calculateIndex(&locations[i]);  // Orang 2
+    }
+
+    printf("\n=== Status Polusi Tiap Lokasi ===\n");
+    for (i = 0; i < n; i++) {
+        displayStatus(&locations[i], i + 1);  // Orang 3
+    }
+    printLine();
+
+    showDanger();   // Orang 4
+
+    printf("\n=== Daftar Lokasi dengan Polusi Berat (HIGH) ===\n");
+    int foundHeavy = 0;
+    for (i = 0; i < n; i++) {
+        if (locations[i].danger == HIGH) {
+            printf("- %s\n", locations[i].name);  // Orang 4
+            foundHeavy = 1;
+        }
+    }
+    if (!foundHeavy) {
+        printf("Tidak ada lokasi dengan polusi berat.\n");  // Orang 4
+    }
+    printf("\n");
     return 0;
 }
 
@@ -171,7 +208,6 @@ void calculateIndex(SeaLocation *loc) {
     } else {
         loc->danger = HIGH;
     }
-<<<<<<< HEAD
 }
 
 //fungsi untuk display status perlokasi
@@ -207,6 +243,10 @@ void displayStatus(SeaLocation *loc, int index) {
 void printLine() {
 	printf("-------------------------------\n");
 }
-=======
+void showDanger() {
+    printf("\n=== Status Bahaya ===\n");
+    printf("LOW      : Polusi rendah, kondisi masih aman\n");
+    printf("MODERATE : Polusi sedang, perlu perhatian lebih\n");
+    printf("HIGH     : Polusi berat, berbahaya bagi lingkungan\n");
 }
->>>>>>> 3d834f20b4c47ca935a399c457b5c81cfd095775
+
