@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include <math.h> // untuk fungsi fabs (pH)
+#include <math.h> 
 
 // tingkat bahaya polusi
 typedef enum {
@@ -12,11 +12,11 @@ typedef enum {
 // data lokasi laut
 typedef struct {
     char name[50];
-    float plasticConcentration;  // dalam mg/m^3
-    float metalConcentration;    // dalam mg/L (Pb)
-    float oilConcentration;      // dalam mg/L
-    float b3Concentration;       // dalam mg/L (Bahan Berbahaya dan Beracun)
-    float pH;                    // Skala pH (0-14)
+    float plasticConcentration; 
+    float metalConcentration;    
+    float oilConcentration;    
+    float b3Concentration;       
+    float pH;                    
     float plasticIndex;
     float metalIndex;
     float oilIndex;
@@ -37,12 +37,12 @@ void sortLocations(SeaLocation *locations, int n, int sortType);
 void displayAllLocations(SeaLocation *locations, int n);
 
 // baku mutu lingkungan (standar konsentrasi maksimum)
-#define PLASTIC_STANDARD 1.0f      // mg/m^3
-#define METAL_STANDARD 0.05f       // mg/L (untuk Timbal/Pb)
-#define OIL_STANDARD 1.0f          // mg/L
-#define B3_STANDARD 0.1f           // mg/L (untuk B3)
-#define PH_STANDARD_MIN 7.5f        // Batas bawah pH normal
-#define PH_STANDARD_MAX 8.5f        // Batas atas pH normal
+#define PLASTIC_STANDARD 1.0f      
+#define METAL_STANDARD 0.05f      
+#define OIL_STANDARD 1.0f       
+#define B3_STANDARD 0.1f          
+#define PH_STANDARD_MIN 7.5f       
+#define PH_STANDARD_MAX 8.5f        
 
 // fungsi main
 int main(){
@@ -61,28 +61,28 @@ int main(){
             printLine();
         }
         printf("Lokasi ke-%d\n\n", i + 1);
-        inputData(&locations[i]);       // Orang 1
-        calculateIndex(&locations[i]);  // Orang 2
+        inputData(&locations[i]); 
+        calculateIndex(&locations[i]);  
     }
 
     printf("\n=== Status Polusi Tiap Lokasi ===\n");
     for (i = 0; i < n; i++) {
-        displayStatus(&locations[i], i + 1);  // Orang 3
+        displayStatus(&locations[i], i + 1);
     }
     printLine();
 
-    showDanger();   // Orang 4
+    showDanger();
 
     printf("\n=== Daftar Lokasi dengan Polusi Berat (HIGH) ===\n");
     int foundHeavy = 0;
     for (i = 0; i < n; i++) {
         if (locations[i].danger == HIGH) {
-            printf("- %s\n", locations[i].name);  // Orang 4
+            printf("- %s\n", locations[i].name);
             foundHeavy = 1;
         }
     }
     if (!foundHeavy) {
-        printf("Tidak ada lokasi dengan polusi berat.\n");  // Orang 4
+        printf("Tidak ada lokasi dengan polusi berat.\n");
     }
     printf("\n");
     return 0;
@@ -283,4 +283,67 @@ void showDanger() {
     printf("LOW      : Polusi rendah, kondisi masih aman\n");
     printf("MODERATE : Polusi sedang, perlu perhatian lebih\n");
     printf("HIGH     : Polusi berat, berbahaya bagi lingkungan\n");
+}
+
+void calculateIndex(SeaLocation *loc) {
+    if (loc->countPolutionTypes == 0) {
+        loc->totalIndex = 0.0f;
+        loc->danger = AMAN;
+        return;
+    }
+
+    // Hitung indeks
+    loc->plasticIndex = loc->plasticConcentration / PLASTIC_STANDARD;
+    loc->metalIndex = loc->metalConcentration / METAL_STANDARD;
+    loc->oilIndex = loc->oilConcentration / OIL_STANDARD;
+    loc->b3Index = loc->b3Concentration / B3_STANDARD;
+    
+    // Hitung indeks pH
+    if (loc->pH > 0) {
+        if (loc->pH < PH_STANDARD_MIN) {
+            loc->pHIndex = (PH_STANDARD_MIN - loc->pH) / PH_STANDARD_MIN;
+        } else if (loc->pH > PH_STANDARD_MAX) {
+            loc->pHIndex = (loc->pH - PH_STANDARD_MAX) / (14.0f - PH_STANDARD_MAX);
+        } else {
+            loc->pHIndex = 0.0f;
+        }
+    }
+
+     // Hitung IPL dengan bobot sama
+    float total = 0.0f;
+    int count = 0;
+    
+    if (loc->plasticConcentration > 0) {
+        total += loc->plasticIndex;
+        count++;
+    }
+    if (loc->metalConcentration > 0) {
+        total += loc->metalIndex;
+        count++;
+    }
+    if (loc->oilConcentration > 0) {
+        total += loc->oilIndex;
+        count++;
+    }
+    if (loc->b3Concentration > 0) {
+        total += loc->b3Index;
+        count++;
+    }
+    if (loc->pH > 0) {
+        total += loc->pHIndex;
+        count++;
+    }
+
+    loc->totalIndex = (count > 0) ? total / count : 0.0f;
+
+// Tentukan tingkat bahaya
+    if (loc->totalIndex < 1) {
+        loc->danger = AMAN;
+    } else if (loc->totalIndex < 2) {
+        loc->danger = SEDANG;
+    } else if (loc->totalIndex < 3) {
+        loc->danger = TINGGI;
+    } else {
+        loc->danger = SANGAT_TINGGI;
+    }
 }
