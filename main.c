@@ -347,3 +347,47 @@ void calculateIndex(SeaLocation *loc) {
         loc->danger = SANGAT_TINGGI;
     }
 }
+
+//display status per lokasi
+void displayStatus(SeaLocation *loc, int index) {
+	printf("\nLokasi %d: %s\n", index, loc->name);
+	if(loc->plasticConcentration > 0) {
+		printf(" Plastik     : %.2f mg/m^3 (Indeks: %.2f)\n", loc->plasticConcentration, loc->plasticIndex);
+	}
+	if(loc->metalConcentration > 0) {
+		printf(" Logam Berat : %.2f mg/L (Indeks: %.2f)\n", loc->metalConcentration, loc->metalIndex);
+	}
+	if(loc->oilConcentration > 0) {
+		printf(" Minyak      : %.2f mg/L (Indeks: %.2f)\n", loc->oilConcentration, loc->oilIndex);
+	}
+	if(loc->b3Concentration > 0) {
+		printf(" B3          : %.2f mg/L (Indeks: %.2f)\n", loc->b3Concentration, loc->b3Index);
+	}
+	if(loc->pH > 0) {
+		printf(" pH          : %.2f (Indeks: %.2f)\n", loc->pH, loc->pHIndex);
+	}
+
+	printf("\nIndeks Polusi laut (IPL): %.2f\n", loc->totalIndex);
+	printf("Status Bahaya: ");
+
+	switch(loc->danger) {
+		case AMAN: printf("AMAN (Rendah)\n"); break;
+		case SEDANG: printf("SEDANG\n"); break;
+		case TINGGI: printf("TINGGI\n"); break;
+		case SANGAT_TINGGI: printf("SANGAT TINGGI (Berbahaya)\n"); break;
+		default: printf("UNKNOWN\n");
+	}
+}
+
+void printLine() {
+	printf("------------------------------------\n");
+}
+
+void showDanger() {
+	printf("\n=== Status Bahaya Berdasarkan IPL ===\n");
+	printf("IPL < 1  : AMAN (Polusi rendah)\n");
+	printf("IPL 1-2  : SEDANG (Perlu perhatian)\n");
+	printf("IPL 2-3  : TINGGI (Berbahaya)\n");
+	printf("IPL >= 3 : SANGAT TINGGI (Sangat Berbahaya)\n");
+}
+
